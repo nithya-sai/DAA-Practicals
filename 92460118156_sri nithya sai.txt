@@ -1,0 +1,98 @@
+#include <iostream>
+#include <vector>
+#include <chrono>
+
+using namespace std;
+using namespace chrono;
+
+// Linear Search
+int findLinear(const vector<int>& data, int value)
+{
+    int i = 0;
+
+    while (i < data.size())
+    {
+        if (data[i] == value)
+        {
+            return i;
+        }
+        i++;
+    }
+
+    return -1;
+}
+
+// Binary Search
+int findBinary(const vector<int>& data, int value)
+{
+    int first = 0;
+    int last = data.size() - 1;
+
+    while (first <= last)
+    {
+        int center = first + (last - first) / 2;
+
+        if (data[center] == value)
+        {
+            return center;
+        }
+
+        if (value > data[center])
+        {
+            first = center + 1;
+        }
+        else
+        {
+            last = center - 1;
+        }
+    }
+
+    return -1;
+}
+
+int main()
+{
+    const int TOTAL = 100000;
+    vector<int> data(TOTAL);
+
+    for (int i = 0; i < TOTAL; ++i)
+    {
+        data[i] = i + 1;
+    }
+
+    int value;
+    cout << "Enter element to search: ";
+    cin >> value;
+
+    auto startTime = high_resolution_clock::now();
+    int position = findLinear(data, value);
+    auto endTime = high_resolution_clock::now();
+
+    cout << "\nLinear Search\n";
+
+    if (position >= 0)
+        cout << "Element found at index " << position << endl;
+    else
+        cout << "Element not found\n";
+
+    cout << "Time Taken : "
+         << duration_cast<microseconds>(endTime - startTime).count()
+         << " microseconds\n";
+
+    startTime = high_resolution_clock::now();
+    position = findBinary(data, value);
+    endTime = high_resolution_clock::now();
+
+    cout << "\nBinary Search\n";
+
+    if (position >= 0)
+        cout << "Element found at index " << position << endl;
+    else
+        cout << "Element not found\n";
+
+    cout << "Time Taken : "
+         << duration_cast<microseconds>(endTime - startTime).count()
+         << " microseconds\n";
+
+    return 0;
+}
