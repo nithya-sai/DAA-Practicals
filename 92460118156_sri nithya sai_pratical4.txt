@@ -1,0 +1,65 @@
+#include <iostream>
+#include <chrono>
+
+using namespace std;
+using namespace chrono;
+
+// Iterative Factorial
+unsigned long long iterativeFactorial(int n)
+{
+    unsigned long long fact = 1;
+
+    while (n > 1)
+    {
+        fact *= n;
+        n--;
+    }
+
+    return fact;
+}
+
+// Recursive Factorial
+unsigned long long recursiveFactorial(int n)
+{
+    if (n == 0 || n == 1)
+        return 1;
+
+    return n * recursiveFactorial(n - 1);
+}
+
+int main()
+{
+    int num;
+
+    cout << "Enter a non-negative integer: ";
+    cin >> num;
+
+    if (num < 0)
+    {
+        cout << "Invalid Input!" << endl;
+        return 1;
+    }
+
+    // Iterative Time
+    auto start1 = high_resolution_clock::now();
+    unsigned long long ans1 = iterativeFactorial(num);
+    auto end1 = high_resolution_clock::now();
+
+    // Recursive Time
+    auto start2 = high_resolution_clock::now();
+    unsigned long long ans2 = recursiveFactorial(num);
+    auto end2 = high_resolution_clock::now();
+
+    auto time1 = duration_cast<nanoseconds>(end1 - start1);
+    auto time2 = duration_cast<nanoseconds>(end2 - start2);
+
+    cout << "\n----- Result -----" << endl;
+
+    cout << "Iterative Factorial : " << ans1 << endl;
+    cout << "Iterative Time      : " << time1.count() << " ns" << endl;
+
+    cout << "Recursive Factorial : " << ans2 << endl;
+    cout << "Recursive Time      : " << time2.count() << " ns" << endl;
+
+    return 0;
+}
